@@ -1,0 +1,71 @@
+{% extends "base.html" %} {% block content %}
+<div class="jumbotron">
+  <h1 class="display-4">Registration</h1>
+  <p class="lead">
+    Please use this page to register.
+  </p>
+  <hr class="my-4" />
+  <p>
+    To read terms and conditions please click here
+    <a href="/register">here</a>
+  </p>
+  <div class="card" style="width: 50rem; align-self: center;">
+    <div class="card-body">
+      <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="form-group row">
+            {{ form.name.label(class="col-sm-3 col-form-label") }} 
+            <div class="col-sm-8">
+                {{ form.name(class="form-control") }}
+              </div>
+        </div>
+        <div class="form-group row">
+            {{ form.email.label(class="col-sm-3 col-form-label") }} 
+            <div class="col-sm-8">
+                {{ form.email(class="form-control", type="Email") }}
+              </div>
+        </div>
+        <div class="form-group row">
+            {{ form.username.label(class="col-sm-3 col-form-label") }} 
+            <div class="col-sm-8">
+                {{ form.username(class="form-control") }}
+              </div>
+        </div>
+        <div class="form-group row">
+            {{ form.password.label(class="col-sm-3 col-form-label") }} 
+            <div class="col-sm-8">
+                {{ form.password(class="form-control", type="password") }}
+              </div>
+        </div>
+        <div class="form-group row">
+            {{ form.pass_confirm.label(class="col-sm-3 col-form-label") }} 
+            <div class="col-sm-8">
+                {{ form.pass_confirm(class="form-control", type="password") }}
+              </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-3">Terms</div>
+          <div class="col-sm-8">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="gridCheck1">
+              <label class="form-check-label" for="gridCheck1">
+                Agree to Terms and Conditions read <a href="/terms">here</a>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-8">
+                {{ form.submit(class="btn btn-primary") }}
+              </div>
+        </div>
+      </form>
+      {% if error %}
+      <div class="alert alert-danger" role="alert">
+        {{ error }}
+      </div>
+      {% endif %} 
+    </div>
+  </div>
+</div>
+{% endblock %}

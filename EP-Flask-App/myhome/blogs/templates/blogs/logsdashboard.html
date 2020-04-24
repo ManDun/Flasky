@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="jumbotron">
+  <h1 class="display-4">Logs Dashboard</h1>
+  <p class="lead">This page provides all the dashboard features for Logs added</p>
+  <hr class="my-4">
+  <p>Select Date to view Logs for a particular date or month or year</p>
+  <form class="orm-inline my-2 my-lg-0" method="post">
+    <div class="form-row">
+      {{ form.hidden_tag() }}
+      <div class="col">
+        {{ form.frequency(class="custom-select btn-secondary") }}
+      </div>
+      <div class="col">
+        {{ form.date_posted(type='Date',
+            class="form-control") }}
+      </div>
+      <div class="col">
+        {{ form.submit(class="btn btn-outline-success my-2 my-sm-0") }}
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="row justify-content-center">
+  <div class="col-10">
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Date</th>
+          <th scope="col">Logs</th>
+          <th scope="col">Remarks</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for log in logs %}
+        <tr>
+          {{ form.hidden_tag() }}
+          <th scope="row"><a href="/editlog/{{log.id}}">{{ loop.index }}</a></th>
+          <td>{{ log.date_posted.strftime('%d %b %Y')}}</td>
+          <td>{{ log.content }}</td>
+          <td>{{ log.remarks }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

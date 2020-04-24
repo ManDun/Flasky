@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="jumbotron">
+  <h1 class="display-4">List Expenses</h1>
+  <p class="lead">Use this page to add logs for today: ({{ date }})</p>
+  <hr class="my-4">
+  <p>To add logs, click on Add and enter your details, the date is preselected as today.</p>
+  <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addlogModal">
+    Add Log
+  </button>
+</div>
+<div class="row justify-content-center">
+  <div class="col-10">
+        {% for expense in expenses %}
+        <li>{{ expense }}</li>
+        {% endfor %}
+  </div>
+</div>
+{% endblock %}

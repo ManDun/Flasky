@@ -1,0 +1,39 @@
+{% extends "base.html" %} 
+{% block content %}
+<div class="jumbotron">
+  <h1 class="display-4">Login</h1>
+  <p class="lead">
+    Please enter your registered username and password to login.
+  </p>
+  <hr class="my-4" />
+  <p>
+    If you havent already registered, please register
+    <a href="{{ url_for('auth.register') }}">here</a>
+  </p>
+  <div class="card" style="width: 25rem; align-content: center;">
+    <div class="card-body">
+      <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.email.label }} {{ form.email(type='Email',
+            class="form-control") }}
+          <small id="emailHelp" class="form-text text-muted"
+            >Email used at the time of registration.</small
+          >
+        </div>
+        <div class="form-group">
+            {{ form.password.label }} {{ form.password(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-primary") }}
+        </div>
+      </form>
+      {% if error %}
+      <div class="alert alert-danger" role="alert">
+        {{ error }}
+      </div>
+      {% endif %} 
+    </div>
+  </div>
+</div>
+{% endblock %}

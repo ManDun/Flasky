@@ -1,0 +1,76 @@
+{% extends "base.html" %} {% block content %}
+<div class="jumbotron">
+  <h1 class="display-4">Add Logs</h1>
+  <p class="lead">Use this page to add logs for the date.</p>
+  <hr class="my-4" />
+  <p>
+    To add logs, click on Add and enter your details, the date is preselected as
+    today.
+  </p>
+  <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addLogModal">
+    Add Log
+  </button>
+</div>
+
+<div class="row justify-content-center">
+  <div class="col-10">
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Time</th>
+          <th scope="col">Logs</th>
+          <th scope="col">Remarks</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for log in logs %}
+        <tr>
+          <th scope="row"><a href="">{{ loop.index }}</a></th>
+          <td>{{ log.date_posted.strftime('%d %b %Y')}}</td>
+          <td>{{ log.content }}</td>
+          <td>{{ log.remarks }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="addLogModal" data-backdrop="static" tabindex="-1" role="dialog"
+  aria-labelledby="addLogModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addLogModalLabel">Add Log</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="POST">
+        <div class="modal-body">
+          {{ form.hidden_tag() }}
+          <div class="form-group">
+            {{ form.date_posted.label }} {{ form.date_posted(type='Date',
+            class="form-control") }}
+          </div>
+          <div class="form-group">
+            {{ form.content.label }} {{ form.content(class="form-control",
+            rows="5") }}
+          </div>
+          <div class="form-group">
+            {{ form.remarks.label }} {{ form.remarks(class="form-control") }}
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+          {{ form.submit(class="btn btn-primary") }}
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
