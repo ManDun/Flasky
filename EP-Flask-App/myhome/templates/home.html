@@ -2,8 +2,13 @@
 
 {% block content %}
 <div class="jumbotron">
-  <h1 class="display-4">Home!</h1>
+  {% if current_user.is_authenticated %}
+  <h1 class="display-4">Hi {{ current_user.username }}</h1>
   <p class="lead">This website incoorporates all the necessary applications required.</p>
+  {% else %}
+  <h1 class="display-4">Hi</h1>
+  <p class="lead">Please login <a href="{{ url_for('auth.login') }}">here</a> to enter this website that incoorporates all the necessary applications required.</p>
+  {% endif %}
   <hr class="my-4">
   <p>This page uses <a href="https://getbootstrap.com/">bootstrap 4</a> and <a href="https://palletsprojects.com/p/flask/">Flask</a>, to know more about the technology and site pages click the button below.</p>
   <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>

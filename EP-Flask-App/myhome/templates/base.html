@@ -89,10 +89,21 @@
             Search
           </button>
         </form>
-        
-        <form class="form-inline my-2 my-lg-1" action="/logout" method="GET">
+        {% if current_user.is_authenticated %}
+        <form class="form-inline my-2 my-lg-1" action="{{url_for('auth.logout')}}" method="GET">
+          <button class="btn btn-link" type="submit">My Account</button>
+        </form>
+        <form class="form-inline my-2 my-lg-1" action="{{url_for('auth.logout')}}" method="GET">
           <button class="btn btn-link" type="submit">Logout</button>
         </form>
+        {% else %}
+        <form class="form-inline my-2 my-lg-1" action="{{url_for('auth.login')}}" method="GET">
+          <button class="btn btn-link" type="submit">Login</button>
+        </form>
+        <form class="form-inline my-2 my-lg-1" action="{{url_for('auth.register')}}" method="GET">
+          <button class="btn btn-link" type="submit">Register</button>
+        </form>
+        {% endif %}
       </div>
     </nav>
     {% block content %}{% endblock %}
