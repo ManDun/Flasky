@@ -1,0 +1,95 @@
+{% extends "base.html" %} {% block content %}
+<div class="jumbotron">
+  <h1 class="display-4">Add Expense</h1>
+  <p class="lead">Use this page to add expense for the date.</p>
+  <hr class="my-4" />
+  <p>
+    To add logs, click on Add and enter your details
+    today.
+  </p>
+  <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addExpenseModal">
+    Add Expense
+  </button>
+  <a class="btn btn-secondary btn-lg" href="{{ url_for('financials.dashboard') }}" role="button">Search Expense</a>
+  
+</div>
+
+<div class="row justify-content-center">
+  <div class="col-10">
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Type</th>
+          <th scope="col">Amount</th>
+          <th scope="col">Details</th>
+          <th scope="col">File</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for expense in expenses %}
+        <tr>
+          <th scope="row"><a href="">{{ loop.index }}</a></th>
+          <td>{{ expense.Expense.name }}</td>
+          <td>{{ expense.Expense.type }}</td>
+          <td>{{ expense.Expense.amount }}</td>
+          <td>{{ expense.Expense.details }}</td>
+          {% if expense.Files %}
+            <td><a href="{{ url_for('financials.download', file_id=expense.Files.id) }}" class="text-reset">{{ expense.Files.name }}</a></td>
+          {% else %}
+          <td class="text-light">None</td>
+          {% endif %}
+          
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="addExpenseModal" data-backdrop="static" tabindex="-1" role="dialog"
+  aria-labelledby="addExpenseModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addExpenseModalLabel">Add Expense</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="POST" enctype="multipart/form-data">
+        <div class="modal-body">
+          {{ form.hidden_tag() }}
+          <div class="form-group">
+            {{ form.date_of_expense.label }} {{ form.date_of_expense(type='Date',
+            class="form-control") }}
+          </div>
+          <div class="form-group">
+            {{ form.name.label }} {{ form.name(class="form-control") }}
+          </div>
+          <div class="form-group">
+            {{ form.type.label }} {{ form.type(class="form-control") }}
+          </div>
+          <div class="form-group">
+            {{ form.amount.label }} {{ form.amount(class="form-control") }}
+          </div>
+          <div class="form-group">
+            {{ form.details.label }} {{ form.details(class="form-control", row="3") }}
+          </div>
+          <div class="form-group">
+            {{ form.expensefile.label }} {{ form.expensefile(class="form-control expense-file-input") }}
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+          {{ form.submit(class="btn btn-primary") }}
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

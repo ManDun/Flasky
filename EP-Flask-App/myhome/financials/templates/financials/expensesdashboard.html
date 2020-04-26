@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="jumbotron">
+  <h1 class="display-4">Expenses Dashboard</h1>
+  <p class="lead">This page provides all the dashboard features for Expenses added</p>
+  <hr class="my-4">
+  <p>Select Date to view Logs for a particular date or month or year</p>
+  <form class="form-inline my-2 my-lg-0" method="post">
+    <div class="form-row">
+      {{ form.hidden_tag() }}
+      <div class="col">
+        {{ form.frequency(class="custom-select btn-secondary") }}
+      </div>
+      <div class="col">
+        {{ form.date_posted(type='Date',
+            class="form-control") }}
+      </div>
+      <div class="col">
+        {{ form.submit(class="btn btn-outline-success my-2 my-sm-0") }}
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="row justify-content-center">
+  <div class="col-10">
+    <table class="table">
+      <thead class="thead-dark">
+        <th scope="col">#</th>
+          <th scope="col">Date</th>
+          <th scope="col">Name</th>
+          <th scope="col">Type</th>
+          <th scope="col">Amount</th>
+          <th scope="col">Details</th>
+          <th scope="col">File</th>
+          <th scope="col">Action</th>
+      </thead>
+      <tbody>
+          {% for expense in expenses %}
+        <tr>
+          <th scope="row"><a href="">{{ loop.index }}</a></th>
+          <td>{{ expense.Expense.date_of_expense.strftime('%d %b %Y') }}</td>
+          <td>{{ expense.Expense.name }}</td>
+          <td>{{ expense.Expense.type }}</td>
+          <td>{{ expense.Expense.amount }}</td>
+          <td>{{ expense.Expense.details }}</td>
+          {% if expense.Files %}
+            <td><a href="{{ url_for('financials.download', file_id=expense.Files.id) }}" class="text-reset">{{ expense.Files.name }}</a></td>
+          {% else %}
+          <td class="text-light">None</td>
+          {% endif %}
+          <td><a class="btn btn-danger btn-sm" href="{{ url_for('financials.delete', expense_id=expense.Expense.id) }}" role="button">Delete</a></td>
+        </tr>
+        {% endfor %}
+        
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

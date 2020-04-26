@@ -1,6 +1,6 @@
 from myhome import db
 from flask import render_template,redirect,request,url_for,flash,abort,Blueprint
-from flask_login import login_user,login_required, logout_user
+from flask_login import login_user,login_required, logout_user, current_user
 from myhome.models import User
 from myhome.auth.forms import RegistrationForm, LoginForm
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -78,3 +78,25 @@ def register():
             return redirect(url_for('auth.login'))
 
     return render_template('register.html', form=form)
+
+@auth_blueprints.route('/profile', methods=['GET', 'POST'])
+def profile():
+
+    user_id = current_user.id
+    if request.method == 'GET':
+        print('GET Request to auth/profile')
+    else:
+        print('POST Request to auth/profile')
+
+    return render_template('userprofile.html', user=current_user)
+
+@auth_blueprints.route('/settings', methods=['GET', 'POST'])
+def settings():
+
+    user_id = current_user.id
+    if request.method == 'GET':
+        print('GET Request to auth/settings')
+    else:
+        print('POST Request to auth/settings')
+
+    return render_template('usersettings.html', user=current_user)

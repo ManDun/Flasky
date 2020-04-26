@@ -54,16 +54,37 @@ class Expense(db.Model):
     details = db.Column(db.String(260))
     date_of_expense = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    expensefile = db.Column(db.LargeBinary)
+    files = db.relationship('Files', backref='source', lazy=True)
 
-    def __init__(self, name=None, type=None, amount=None, details=None, date=None, user_id=None, file=None):
+
+    def __init__(self, name=None, type=None, amount=None, details=None, date_of_expense=None, user_id=None):
         self.name = name
         self.type = type
         self.amount = amount
         self.details = details
-        self.date = date
+        self.date_of_expense = date_of_expense
         self.user_id = user_id
-        self.file = file
 
     def __repr__(self):
-        return f"User('{self.username}', '{self.email}')"
+        return f"Expenses('{self.name}', '{self.amount}')"
+
+
+class Files(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+    type = db.Column(db.String(50), nullable=False)
+    date_of_upload = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+    contents = db.Column(db.LargeBinary)
+    size = db.Column(db.Float, default=0)
+    expense_id = db.Column(db.Integer, db.ForeignKey('expense.id'), nullable=False)
+
+    def __init__(self, name=None, type=None, date_of_upload=None, contents=None, size=None, expense_id=None):
+        self.name = name
+        self.type = type
+        self.date_of_upload = date_of_upload
+        self.contents = contents
+        self.size = size
+        self.expense_id = expense_id
+
+    def __repr__(self):
+        return f"Files('{self.name}', '{self.id}', '{self.type}')"

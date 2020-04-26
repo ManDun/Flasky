@@ -1,19 +1,22 @@
 from flask import Blueprint, render_template, redirect, url_for, request
 from myhome import db
-from myhome.models import Logs
+from myhome.models import Logs, User
 from myhome.blogs.forms import AddLog, DeleteLog, SearchLog
+from flask_login import current_user,login_required
 from sqlalchemy import extract
 import datetime
 
 blogs_blueprints = Blueprint('blogs', __name__, template_folder='templates/blogs')
 
+
 @blogs_blueprints.route('/add', methods=['GET', 'POST'])
 def add():
 
     form = AddLog()
+    user_id = current_user.id
     if request.method == 'GET':
         print('GET Request to blogs/add')
-        logs = Logs.query.filter(db.func.DATE(Logs.date_posted) == datetime.date.today()).all()
+        logs = Logs.query.filter(db.func.DATE(Logs.date_posted) == datetime.date.today()).filter_by(user_id=user_id).all()
     else:
         print('POST Request to blogs/add')
         print(f'Valid form: {form.validate()}')
@@ -24,7 +27,7 @@ def add():
             content = form.content.data
             remarks = form.remarks.data
 
-            new_log = Logs(date_posted, content, remarks)
+            new_log = Logs(date_posted, content, remarks, user_id=user_id)
             db.session.add(new_log)
             db.session.commit()
 
@@ -36,7 +39,7 @@ def add():
 def dashboard():
 
     form = SearchLog()
-
+    user_id = current_user.id
     if request.method == 'GET':
         print('GET Request to blogs/dashboard')
         logs = Logs.query.all()
@@ -50,13 +53,13 @@ def dashboard():
             selecteddate = form.date_posted.data
             
             if frequency == 'monthly':
-                logs = Logs.query.filter(extract('month', Logs.date_posted) == selecteddate.month).all()
+                logs = Logs.query.filter(extract('month', Logs.date_posted) == selecteddate.month).filter_by(user_id=user_id).all()
             elif frequency == 'yearly':
-                logs = Logs.query.filter(extract('year', Logs.date_posted) == selecteddate.year).all()
+                logs = Logs.query.filter(extract('year', Logs.date_posted) == selecteddate.year).filter_by(user_id=user_id).all()
             elif frequency == 'daily':
-                logs = Logs.query.filter(extract('day', Logs.date_posted) == selecteddate.day).all()
+                logs = Logs.query.filter(extract('day', Logs.date_posted) == selecteddate.day).filter_by(user_id=user_id).all()
             else:
-                logs = Logs.query.filter(db.func.DATE(Logs.date_posted) == datetime.date.today()).all()
+                logs = Logs.query.filter(db.func.DATE(Logs.date_posted) == datetime.date.today()).filter_by(user_id=user_id).all()
 
     return render_template('logsdashboard.html', logs=logs, form=form)
 
