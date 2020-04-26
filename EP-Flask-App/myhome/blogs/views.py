@@ -42,7 +42,7 @@ def dashboard():
     user_id = current_user.id
     if request.method == 'GET':
         print('GET Request to blogs/dashboard')
-        logs = Logs.query.all()
+        logs = Logs.query.filter(db.func.DATE(Logs.date_posted) == datetime.date.today()).filter_by(user_id=user_id).all()
         
     else:
         print('POST Request to blogs/dashboard')
