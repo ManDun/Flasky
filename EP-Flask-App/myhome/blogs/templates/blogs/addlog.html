@@ -21,6 +21,7 @@
           <th scope="col">Time</th>
           <th scope="col">Logs</th>
           <th scope="col">Remarks</th>
+          <th scope="col">Action</th>
         </tr>
       </thead>
       <tbody>
@@ -30,6 +31,7 @@
           <td>{{ log.date_posted.strftime('%d %b %Y')}}</td>
           <td>{{ log.content }}</td>
           <td>{{ log.remarks }}</td>
+          <td><a class="btn btn-danger btn-sm" href="{{ url_for('blogs.delete', log_id=log.id) }}" role="button">Delete</a></td>
         </tr>
         {% endfor %}
       </tbody>
